@@ -23,7 +23,7 @@ void App::createWindow()
     settings.windowMode = OF_WINDOW; //can also be OF_FULLSCREEN
 
     m_of_window = ofCreateWindow(settings);
-    m_window = make_shared<Application::Window>();
+    m_window = make_shared<Application::Window>("", "");
 }
 
 } // namespace Application

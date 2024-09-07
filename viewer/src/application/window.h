@@ -25,7 +25,7 @@ public:
 
 private:
     Elements::VideoPlayer m_video_player;
-    Elements::HTMLPlayer m_html_player;
+    Elements::VideoPlayer m_html_player;
 
     std::string m_html_file_path;
     std::string m_video_file_path;
