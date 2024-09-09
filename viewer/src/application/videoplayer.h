@@ -4,7 +4,7 @@
 
 namespace Elements {
 
-class VideoPlayer: public ofThread
+class VideoPlayer
 {
 public:
     VideoPlayer(const std::string& video_file_path):
@@ -12,8 +12,8 @@ public:
     {}
 
     void setup(const ofRectangle& rect);
-    void threadedFunction() override;
     void draw();
+    void update();
 
 private:
     ofVideoPlayer m_video_player;

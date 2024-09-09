@@ -36,3 +36,5 @@ build-viewer-Desktop_Qt_6_5_0_GCC_64bit-Debug/
 viewer/viewer.qbs.user
 
 viewer/bin/
+
+build-viewer-Desktop_Qt_6_5_0_GCC_64bit-Release/

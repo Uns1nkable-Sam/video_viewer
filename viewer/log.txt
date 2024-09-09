@@ -1,0 +1,3 @@
+Restoring build graph from disk
+[0m[0mBuilding for configuration Debug_Desktop__307503251037df1d
+Build done for configuration Debug_Desktop__307503251037df1d.
