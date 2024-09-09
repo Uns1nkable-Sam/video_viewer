@@ -1,15 +1,11 @@
- 
 #pragma once
 
-#include "include/base/cef_callback_forward.h"
 #include "ofMain.h"
-#include "include/cef_app.h"
 #include "include/cef_client.h"
 #include "include/cef_render_handler.h"
 
 
 
-// Custom ClientHandler class
 class ClientHandler : public CefClient, public CefRenderHandler {
 public:
     ClientHandler(int width, int height);
@@ -38,18 +34,21 @@ private:
     IMPLEMENT_REFCOUNTING(ClientHandler);
 };
 
-// OF App
 class ofApp : public ofBaseApp {
 public:
     void setup();
     void update();
     void draw();
 
+private:
     ofTexture cefTexture;
     ClientHandler* clientHandler;
-
     ofVideoPlayer m_video_player;
-
     std::string m_video_file_path = "";
-    void createBrowser();
+
+    uint64_t m_last_html_frame;
+    uint64_t m_last_video_frame;
+
+    uint64_t m_video_ms_per_frame = 40;
+    uint64_t m_html_ms_per_frame = 20;
 };

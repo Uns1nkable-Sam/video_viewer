@@ -1,7 +1,6 @@
-#include "ofMain.h"
+#include "include/cef_app.h"
 #include "ofApp.h"
 
-// Main entry point for OpenFrameworks app
 int main(int argc, char** argv) {
     CefMainArgs main_args(argc, argv);
     CefRefPtr<CefApp> cef_app;
@@ -10,7 +9,7 @@ int main(int argc, char** argv) {
         return exit_code;
     }
 
-    ofSetupOpenGL(1024, 768, OF_WINDOW); // setup the GL context
-    ofRunApp(new ofApp()); // start the app
+    ofSetupOpenGL(1024, 768, OF_WINDOW);
+    ofRunApp(new ofApp());
     CefShutdown();
 }

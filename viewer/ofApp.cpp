@@ -7,9 +7,6 @@
 
 #include "include/base/cef_callback.h"
 #include "include/cef_app.h"
-#include "include/cef_parser.h"
-#include "include/views/cef_browser_view.h"
-#include "include/views/cef_window.h"
 
 
 ClientHandler::ClientHandler(int width, int height) : width(width), height(height) {
@@ -33,7 +30,6 @@ void ClientHandler::OnPaint(CefRefPtr<CefBrowser> browser,
 
 void ClientHandler::delayedBrowser() {
     if (!CefCurrentlyOn(TID_UI)) {
-        // Execute on the UI thread.
         CefPostTask(TID_UI, base::BindOnce(&ClientHandler::createBrowser, base::Unretained(this)));
         return;
     }
@@ -49,15 +45,15 @@ void ClientHandler::createBrowser() {
     CefWindowInfo window_info;
     window_info.SetAsWindowless(0);
 
-    // Browser settings
     CefBrowserSettings browser_settings;
-
-    // Create the browser instance
+    browser_settings.windowless_frame_rate = 50;
     CefBrowserHost::CreateBrowserSync(window_info, this, "file:///home/raistlin/work/boilerplates/cef_of_example/bin/ball.html", browser_settings, nullptr, nullptr);
 }
 
 void ofApp::setup() {
-    // Setup CEF
+    int frameRate = int(std::round(1000 / std::min(m_video_ms_per_frame, m_html_ms_per_frame)));
+    ofSetFrameRate(frameRate);
+
     CefSettings settings;
     CefString(&settings.cache_path) = "/home/raistlin/work/boilerplates/video_viewer/viewer/bin/cef_cache";
     settings.no_sandbox = true;
@@ -79,16 +75,36 @@ void ofApp::setup() {
         return;
     }
 
+    m_last_html_frame = ofGetElapsedTimeMillis();
+    m_last_video_frame = ofGetElapsedTimeMillis();
+
     m_video_player.setLoopState(OF_LOOP_NORMAL);
-    m_video_player.play();
+    m_video_player.setPaused(true);
 }
 
 void ofApp::update() {
-    m_video_player.update();
+    auto millis = ofGetElapsedTimeMillis();
+    auto diff = millis - m_last_video_frame;
+
+    int next_frame = m_video_player.getCurrentFrame() + int(std::ceil(diff / m_video_ms_per_frame));
+    if (next_frame >= m_video_player.getTotalNumFrames()) {
+        next_frame = next_frame % m_video_player.getTotalNumFrames();
+    }
+
+    if(next_frame != m_video_player.getCurrentFrame()) {
+        ofLogNotice() << "current_frame: " << next_frame;
+        m_video_player.setFrame(next_frame);
+        m_video_player.update();
+        m_last_video_frame = millis;
+    }
+
+    if (diff > m_video_ms_per_frame) {
+        ofLogNotice() << diff;
+    }
 }
 
 void ofApp::draw() {
     cefTexture.loadData(clientHandler->getPixels(), ofGetWidth() / 2, ofGetHeight(), GL_RGBA);
     cefTexture.draw(0, 0);
-    m_video_player.draw(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());  // Draw the video
+    m_video_player.draw(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
 }
