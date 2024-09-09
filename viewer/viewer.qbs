@@ -11,7 +11,6 @@ Project {
 
     references: [
         FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/openFrameworks.qbs"),
-        FileInfo.joinPaths(sourceDirectory, "modules/cef/cef.qbs"),
     ]
 
     OfApp {
@@ -19,16 +18,8 @@ Project {
         cpp.cxxLanguageVersion: "c++17"
         files: [
             "main.cpp",
-            "src/application/app.cpp",
-            "src/application/app.h",
-            "src/application/videoplayer.cpp",
-            "src/application/videoplayer.h",
-            "src/application/htmlplayer.cpp",
-            "src/application/htmlplayer.h",
-            "src/application/window.cpp",
-            "src/application/window.h",
-            "src/application/cefhandler.cpp",
-            "src/application/cefhandler.h",
+            "ofApp.cpp",
+            "ofApp.h",
         ]
 
         of.addons: [
@@ -66,11 +57,6 @@ Project {
         Depends{
             name: "openFrameworks"
         }
-
-//        Depends{
-//            name: "cef"
-//            root: project.cef_root
-//        }
     }
 
     property bool makeOF: true

@@ -1,11 +1,8 @@
-#include <iostream>
+#include "ofMain.h"
+#include "ofApp.h"
 
-#include "app.h"
-
-using namespace std;
-
-int main(int argc, char *argv[])
-{
+// Main entry point for OpenFrameworks app
+int main(int argc, char** argv) {
     CefMainArgs main_args(argc, argv);
     CefRefPtr<CefApp> cef_app;
     int exit_code = CefExecuteProcess(main_args, cef_app.get(), nullptr);
@@ -13,9 +10,7 @@ int main(int argc, char *argv[])
         return exit_code;
     }
 
-    cout << "Hello World!" << endl;
-    Application::App app;
-    int result = app.run(argc, argv);
-
-    return result;
+    ofSetupOpenGL(1024, 768, OF_WINDOW); // setup the GL context
+    ofRunApp(new ofApp()); // start the app
+    CefShutdown();
 }
