@@ -8,6 +8,7 @@ Project {
 //    property string ofRoot: qbs.getEnv("OF_ROOT")
     property string of_root: "/home/raistlin/software/of_v0.12.0_linux64gcc6_release"
     property string cef_root: "/home/raistlin/software/cef_binary_128.4.9+g9840ad9+chromium-128.0.6613.120_linux64"
+    property string crow_root: "/home/raistlin/software/Crow"
 
     references: [
         FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/openFrameworks.qbs"),
@@ -20,6 +21,8 @@ Project {
             "main.cpp",
             "ofApp.cpp",
             "ofApp.h",
+            "server.cpp",
+            "server.h",
         ]
 
         of.addons: [
@@ -31,6 +34,7 @@ Project {
         of.pkgConfigs: []       // list of additional system pkgs to include
         of.includePaths: [
            project.cef_root,
+           FileInfo.joinPaths(crow_root, "/include"),
         ]     // include search paths
         of.cFlags: []           // flags passed to the c compiler
         of.cxxFlags: []         // flags passed to the c++ compiler

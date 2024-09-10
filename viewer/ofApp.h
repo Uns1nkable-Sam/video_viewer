@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "include/cef_client.h"
 #include "include/cef_render_handler.h"
+#include "server.h"
 
 
 
@@ -34,13 +35,20 @@ private:
     IMPLEMENT_REFCOUNTING(ClientHandler);
 };
 
-class ofApp : public ofBaseApp {
+class ofApp : public ofBaseApp, public Web::IScreenshotMaker {
 public:
     void setup();
     void update();
     void draw();
-
+    void exit();
+    void makeScreenshot();
+    std::vector<unsigned char> getScreenshotData();
 private:
+    std::mutex draw_mutex;
+    std::mutex screenshot_mutex;
+
+    Web::Server m_server;
+
     ofTexture cefTexture;
     ClientHandler* clientHandler;
     ofVideoPlayer m_video_player;
@@ -51,4 +59,7 @@ private:
 
     uint64_t m_video_ms_per_frame = 40;
     uint64_t m_html_ms_per_frame = 20;
+
+    ofImage screenShot;
+    std::vector<unsigned char> m_image_bytes;
 };

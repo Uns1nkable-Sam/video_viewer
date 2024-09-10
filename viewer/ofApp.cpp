@@ -53,6 +53,7 @@ void ClientHandler::createBrowser() {
 void ofApp::setup() {
     int frameRate = int(std::round(1000 / std::min(m_video_ms_per_frame, m_html_ms_per_frame)));
     ofSetFrameRate(frameRate);
+    ofSetVerticalSync(true);
 
     CefSettings settings;
     CefString(&settings.cache_path) = "/home/raistlin/work/boilerplates/video_viewer/viewer/bin/cef_cache";
@@ -80,6 +81,8 @@ void ofApp::setup() {
 
     m_video_player.setLoopState(OF_LOOP_NORMAL);
     m_video_player.setPaused(true);
+
+    m_server.withScreenshotMaker(this).run();
 }
 
 void ofApp::update() {
@@ -92,7 +95,7 @@ void ofApp::update() {
     }
 
     if(next_frame != m_video_player.getCurrentFrame()) {
-        ofLogNotice() << "current_frame: " << next_frame;
+//        ofLogNotice() << "current_frame: " << next_frame;
         m_video_player.setFrame(next_frame);
         m_video_player.update();
         m_last_video_frame = millis;
@@ -104,7 +107,33 @@ void ofApp::update() {
 }
 
 void ofApp::draw() {
+    std::lock_guard<std::mutex> guard(draw_mutex);
+    ofBackground(100, 100, 100);
     cefTexture.loadData(clientHandler->getPixels(), ofGetWidth() / 2, ofGetHeight(), GL_RGBA);
     cefTexture.draw(0, 0);
     m_video_player.draw(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+}
+
+void ofApp::exit()
+{
+    m_server.stop();
+}
+
+void ofApp::makeScreenshot() {
+    ofBuffer buf;
+    {
+        std::lock_guard<std::mutex> guard(draw_mutex);
+        screenShot.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        ofSaveImage(screenShot.getPixels(), buf, OF_IMAGE_FORMAT_PNG);
+        m_image_bytes.resize(buf.size());
+    }
+    {
+        std::lock_guard<std::mutex> guard(screenshot_mutex);
+        memcpy(m_image_bytes.data(), buf.getData(), buf.size());
+    }
+}
+
+std::vector<unsigned char> ofApp::getScreenshotData() {
+    std::lock_guard<std::mutex> guard(screenshot_mutex);
+    return std::move(std::vector<unsigned char>(m_image_bytes));
 }
