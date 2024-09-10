@@ -9,7 +9,7 @@
 
 class ClientHandler : public CefClient, public CefRenderHandler {
 public:
-    ClientHandler(int width, int height);
+    ClientHandler(int width, int height, const std::string& current_path);
     ~ClientHandler();
 
     virtual CefRefPtr<CefRenderHandler> GetRenderHandler() override {
@@ -26,26 +26,29 @@ public:
     unsigned char* getPixels();
 
     void createBrowser();
-    void delayedBrowser();
+    void delayedBrowserCreation();
 private:
     int width, height;
     unsigned char* pixels;
     CefRefPtr<CefBrowser> browser;
+    std::string m_current_path;
 
     IMPLEMENT_REFCOUNTING(ClientHandler);
 };
 
 class ofApp : public ofBaseApp, public Web::IScreenshotMaker {
 public:
+
     void setup();
     void update();
     void draw();
     void exit();
-    void makeScreenshot();
-    std::vector<unsigned char> getScreenshotData();
+    std::vector<unsigned char> makeScreenshot();
 private:
     std::mutex draw_mutex;
     std::mutex screenshot_mutex;
+
+    std::string m_current_path;
 
     Web::Server m_server;
 
@@ -57,9 +60,20 @@ private:
     uint64_t m_last_html_frame;
     uint64_t m_last_video_frame;
 
+    uint64_t m_current_video_frame = 0;
+    uint64_t m_last_video_frame_drawn = 0;
+
     uint64_t m_video_ms_per_frame = 40;
     uint64_t m_html_ms_per_frame = 20;
 
     ofImage screenShot;
+
     std::vector<unsigned char> m_image_bytes;
+    std::atomic<bool> need_screenshot = false;
+    std::atomic<bool> has_new_frame = false;
+
+    std::shared_ptr<std::thread> m_frame_changer;
+
+    ofPixels videoPixels;
+    ofImage image;
 };

@@ -10,8 +10,7 @@ namespace Web {
 
 class IScreenshotMaker {
 public:
-    virtual void makeScreenshot() = 0;
-    virtual std::vector<unsigned char> getScreenshotData() = 0;
+    virtual std::vector<unsigned char> makeScreenshot() = 0;
 };
 
 class Server

@@ -12,8 +12,7 @@ void Server::init()
 {
     if (m_screenshots) {
         CROW_ROUTE(m_crow, "/screenshot.png")([&](){
-            m_screenshots->makeScreenshot();
-            auto data = m_screenshots->getScreenshotData();
+            auto data = m_screenshots->makeScreenshot();
             return crow::response(200, "image/png", std::string(data.begin(), data.end()));
         });
     }

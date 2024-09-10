@@ -16,7 +16,7 @@ Project {
 
     OfApp {
         name: { return FileInfo.baseName(sourceDirectory) }
-        cpp.cxxLanguageVersion: "c++17"
+        cpp.cxxLanguageVersion: "c++20"
         files: [
             "main.cpp",
             "ofApp.cpp",
