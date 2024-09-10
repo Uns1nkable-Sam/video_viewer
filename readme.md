@@ -14,7 +14,7 @@
 
 ## Crow
 
-Скачать [отсюда] (https://github.com/CrowCpp/Crow), достаточно просто скачать и положить. Честно.
+Скачать [отсюда](https://github.com/CrowCpp/Crow), достаточно просто скачать и положить. Честно.
 
 # Build and run
 
@@ -26,7 +26,14 @@ QBS=/home/raistlin/Qt/Tools/QtCreator/bin/qbs OF_ROOT=/home/raistlin/software/of
 
 Переменные окружения нужные для сборки:
 
-`QBS` - путь к исполняемому файлу qbs
-`OF_ROOT` - путь к OpenFrameworks
-`CEF_ROOT` - путь к CEF
-`CROW_ROOT` - путь к репозиторию с Crow
+* `QBS` - путь к исполняемому файлу qbs
+* `OF_ROOT` - путь к OpenFrameworks
+* `CEF_ROOT` - путь к CEF
+* `CROW_ROOT` - путь к репозиторию с Crow
+
+URL для снятия скриншота - [http://localhost:18008/screenshot.png](http://localhost:18008/screenshot.png)
+
+Выглядит оно как-то так:
+![Здесь должна быть картинка](https://github.com/Uns1nkable-Sam/video_viewer/blob/chromium_of/screenshot.png "Logo Title Text 1")
+
+
