@@ -9,7 +9,6 @@ int main(int argc, char** argv) {
         return exit_code;
     }
 
-
     ofSetupOpenGL(1024, 768, OF_WINDOW);
     ofRunApp(new ofApp());
     CefShutdown();

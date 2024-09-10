@@ -42,7 +42,7 @@ Project {
         of.defines: []          // defines are passed as -D to the compiler
                                 // and can be checked with #ifdef or #if in the code
         cpp.libraryPaths: [
-            FileInfo.joinPaths(cef_root, "/Debug"),
+            FileInfo.joinPaths(cef_root, "/Release"),
             FileInfo.joinPaths(cef_root, "/build/libcef_dll_wrapper")
         ]
         of.frameworks: []       // osx only, additional frameworks to link with the project
@@ -60,6 +60,24 @@ Project {
 
         Depends{
             name: "openFrameworks"
+        }
+
+        Group {
+            name: "Copy after build"
+            files: [
+                "resources/*",
+            ]
+            fileTags: ["install"]
+
+            qbs.install: true
+            qbs.installDir: "bin"
+        }
+        Group {
+            name: "The App itself"
+            fileTagsFilter: "application"
+            fileTags: ["install"]
+            qbs.install: true
+            qbs.installDir: "bin"
         }
     }
 
