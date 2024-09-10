@@ -50,7 +50,7 @@ void ClientHandler::createBrowser() {
 
     CefBrowserSettings browser_settings;
     browser_settings.windowless_frame_rate = 50;
-    CefBrowserHost::CreateBrowserSync(window_info, this, "file:/"+m_current_path+"/ball.html", browser_settings, nullptr, nullptr);
+    CefBrowserHost::CreateBrowserSync(window_info, this, "file://"+m_current_path+"/ball.html", browser_settings, nullptr, nullptr);
 }
 
 void ofApp::setup() {

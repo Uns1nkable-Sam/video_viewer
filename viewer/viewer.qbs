@@ -1,18 +1,22 @@
 import qbs
 import qbs.FileInfo
-import "/home/raistlin/software/of_v0.12.0_linux64gcc6_release/libs/openFrameworksCompiled/project/qtcreator/ofApp.qbs" as OfApp
-
+import qbs.Environment
+import "ofApp.qbs" as OfApp
+import "modules/helpers.js" as Helper
 
 Project {
     id: project
-//    property string ofRoot: qbs.getEnv("OF_ROOT")
-    property string of_root: "/home/raistlin/software/of_v0.12.0_linux64gcc6_release"
-    property string cef_root: "/home/raistlin/software/cef_binary_128.4.9+g9840ad9+chromium-128.0.6613.120_linux64"
-    property string crow_root: "/home/raistlin/software/Crow"
+    property string libs_root: "/home/raistlin/software"
+    property string of_root: Helper.getEnvDefault("OF_ROOT", libs_root+"/of_v0.12.0_linux64gcc6_release")
+    property string cef_root: Helper.getEnvDefault("CEF_ROOT", libs_root+"/cef_binary_128.4.9+g9840ad9+chromium-128.0.6613.120_linux64")
+    property string crow_root: Helper.getEnvDefault("CROW_ROOT", libs_root+"/Crow")
 
     references: [
         FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/openFrameworks.qbs"),
+        FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator/ofApp.qbs"),
     ]
+
+    qbsSearchPaths: FileInfo.joinPaths(of_root, "/libs/openFrameworksCompiled/project/qtcreator")
 
     OfApp {
         name: { return FileInfo.baseName(sourceDirectory) }
@@ -53,7 +57,6 @@ Project {
             name: "cpp"
         }
 
-        // common rules that parse the include search paths, core libraries...
         Depends{
             name: "of"
         }
@@ -83,6 +86,4 @@ Project {
 
     property bool makeOF: true
     property bool precompileOfMain: false
-
-
 }

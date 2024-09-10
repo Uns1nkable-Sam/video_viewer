@@ -9,7 +9,14 @@ int main(int argc, char** argv) {
         return exit_code;
     }
 
-    ofSetupOpenGL(1024, 768, OF_WINDOW);
+    // Set up window settings
+    ofGLFWWindowSettings settings;
+    settings.setSize(1024, 768);  // Set the window size
+    settings.resizable = false;   // Disable window resizing
+
+    // Create the window with these settings
+    ofCreateWindow(settings);
+
     ofRunApp(new ofApp());
     CefShutdown();
 }
